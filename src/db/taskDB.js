@@ -16,6 +16,44 @@ dotenv.config({ path: path.join(__dirname, "..", "..", ".env") });
 const __taskDBName = String(process.env.DB_NAME);
 const __taskDBPath = path.join(__dirname, __taskDBName);
 
+const timestampWithTimezone = () => {
+    const date = new Date();
+    const offset = -date.getTimezoneOffset();
+    const sign = offset >= 0 ? "+" : "-";
+    const absoluteOffset = Math.abs(offset);
+    const hours = String(Math.floor(absoluteOffset / 60)).padStart(2, "0");
+    const minutes = String(absoluteOffset % 60).padStart(2, "0");
+    return `${date.toISOString().slice(0, 19)}${sign}${hours}:${minutes}`;
+};
+
+const formatTimestamp = (timestamp) => {
+    if (!timestamp) return null;
+
+    const match = String(timestamp).match(/([+-])(\d{2}):(\d{2})$/);
+    const offsetMinutes = match
+        ? (Number(match[2]) * 60 + Number(match[3])) * (match[1] === "+" ? 1 : -1)
+        : 0;
+    const date = new Date(timestamp);
+    if (Number.isNaN(date.getTime())) return timestamp;
+
+    const localDate = new Date(date.getTime() + offsetMinutes * 60000);
+    const day = localDate.getUTCDate();
+    const suffix =
+        day % 10 === 1 && day !== 11
+            ? "st"
+            : day % 10 === 2 && day !== 12
+              ? "nd"
+              : day % 10 === 3 && day !== 13
+                ? "rd"
+                : "th";
+    const month = new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" }).format(
+        localDate,
+    );
+    const time = `${String(localDate.getUTCHours()).padStart(2, "0")}:${String(localDate.getUTCMinutes()).padStart(2, "0")}`;
+    const timezone = match ? `GMT${match[1]}${match[2]}:${match[3]}` : "GMT";
+    return `${month} ${day}${suffix}, ${localDate.getUTCFullYear()} - ${time} - Timezone(${timezone})`;
+};
+
 export default class taskDB {
     static taskId = 0;
     static async readTaskDB() {
@@ -104,7 +142,7 @@ export default class taskDB {
                 title: title,
                 description: description,
                 status: status,
-                createdAt: new Date().toISOString(),
+                createdAt: timestampWithTimezone(),
                 updatedAt: null,
             };
             if (!taskValidator([task])) {
@@ -130,7 +168,7 @@ export default class taskDB {
                 title: title || data[taskIndex].title,
                 description: description || data[taskIndex].description,
                 status: status || data[taskIndex].status,
-                updatedAt: new Date().toISOString(),
+                updatedAt: timestampWithTimezone(),
             };
             if (!taskValidator([updatedTask])) {
                 console.log(
@@ -155,5 +193,17 @@ export default class taskDB {
         data.splice(taskIndex, 1);
         await this.writeOrResetTaskDB(data);
         return true;
+    }
+    static async listTasks() {
+        const data = await this.readTaskDB();
+        if (data.length === 0) {
+            console.log(warning("No tasks found in the task DB."));
+            return [];
+        }
+        return data.map((task) => ({
+            ...task,
+            createdAt: formatTimestamp(task.createdAt),
+            updatedAt: formatTimestamp(task.updatedAt),
+        }));
     }
 }

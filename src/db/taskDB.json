@@ -1,10 +1,42 @@
 [
-  {
-    "id": 1,
-    "title": "My First Task",
-    "description": "Task Description",
-    "status": "todo",
-    "createdAt": "2026-08-21T17:25:27.188Z",
-    "updatedAt": null
-  }
+    {
+        "id": 1,
+        "title": "My First Task",
+        "description": "Task Description",
+        "status": "todo",
+        "createdAt": "2026-08-21T17:25:27.188Z",
+        "updatedAt": null
+    },
+    {
+        "id": 2,
+        "title": "Review project requirements",
+        "description": "Go through the task tracker requirements and note any missing details.",
+        "status": "in-progress",
+        "createdAt": "2026-08-21T18:10:00.000Z",
+        "updatedAt": "2026-08-22T08:30:00.000Z"
+    },
+    {
+        "id": 3,
+        "title": "Add task filtering",
+        "description": "Allow users to filter tasks by their current status.",
+        "status": "todo",
+        "createdAt": "2026-08-22T09:15:00.000Z",
+        "updatedAt": null
+    },
+    {
+        "id": 4,
+        "title": "Write README usage examples",
+        "description": "Document the available CLI commands with short examples.",
+        "status": "done",
+        "createdAt": "2026-08-20T14:45:00.000Z",
+        "updatedAt": "2026-08-21T11:20:00.000Z"
+    },
+    {
+        "id": 5,
+        "title": "Test task deletion",
+        "description": "Verify that deleting a task updates the JSON database correctly.",
+        "status": "in-progress",
+        "createdAt": "2026-08-22T10:00:00.000Z",
+        "updatedAt": null
+    }
 ]

@@ -5,8 +5,15 @@
   "license": "ISC",
   "author": "Saeed Ghahremanzadeh",
   "type": "module",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
+    "task": "node src/main.js",
+    "start": "node src/main.js",
+    "help": "node src/main.js --help",
+    "add-task": "node src/main.js add-task",
+    "edit-task": "node src/main.js edit-task",
+    "delete-task": "node src/main.js delete-task",
+    "list-tasks": "node src/main.js list-tasks",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

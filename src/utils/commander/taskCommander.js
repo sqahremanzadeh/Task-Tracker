@@ -33,4 +33,10 @@ const deleteTaskCommand = program
     .description("Deleting an existing task")
     .requiredOption("-i, --id <id>", "ID of the task to delete");
 
-export { addTaskCommand, editTaskCommand, deleteTaskCommand };
+// Listing existing tasks command
+const listTasksCommand = program
+    .command("list-tasks")
+    .description("List all existing tasks")
+    .option("-s, --status <status>", "Filter tasks by status (todo, in-progress, done)");
+
+export { addTaskCommand, editTaskCommand, deleteTaskCommand, listTasksCommand };

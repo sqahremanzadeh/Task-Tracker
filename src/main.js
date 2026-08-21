@@ -5,8 +5,10 @@ import {
     addTaskCommand,
     editTaskCommand,
     deleteTaskCommand,
+    listTasksCommand,
 } from "./utils/commander/taskCommander.js";
-import { errorOut, warning, success } from "./utils/chalkUtils.js";
+import { errorOut, warning, success, tableOutput } from "./utils/chalkUtils.js";
+import { renderTaskTable } from "./utils/tableOptions/taskTableOptions.js";
 
 // Initializing the task DB
 await taskDB.createTaskDB();
@@ -41,6 +43,17 @@ deleteTaskCommand.action(async (options) => {
         console.log(success(`Task with ID ${id} deleted successfully.`));
     } else {
         console.log(errorOut(`Failed to delete task with ID ${id}.`));
+    }
+});
+
+// Listing existing tasks command action
+listTasksCommand.action(async () => {
+    const tasks = await taskDB.listTasks();
+    if (tasks.length === 0) {
+        console.log(warning("No tasks found in the task DB."));
+    } else {
+        const table = renderTaskTable(tasks);
+        console.log(tableOutput(table));
     }
 });
 program.parse(process.argv);
