@@ -1,7 +1,7 @@
 import chalk from "chalk";
 
-const error = chalk.bold.red();
-const warning = chalk.bold.yellow();
-const success = chalk.bold.green();
+const errorOut = chalk.bold.red;
+const warning = chalk.bold.yellow;
+const success = chalk.bold.green;
 
-export { error, warning, success };
+export { errorOut, warning, success };

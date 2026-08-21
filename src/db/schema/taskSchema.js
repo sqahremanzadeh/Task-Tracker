@@ -1,7 +1,10 @@
-import ajv from "ajv";
+import Ajv from "ajv";
+import addFormats from "ajv-formats";
 
-const ajvInstance = new ajv({ allErrors: true, useDefaults: true });
+const ajvInstance = new Ajv({ allErrors: true, useDefaults: true });
+addFormats(ajvInstance);   // <-- this adds "date-time" and other common formats
 
+// Your schema remains the same (with the fixes from earlier)
 const taskSchema = {
   type: "array",
   items: {
@@ -9,16 +12,15 @@ const taskSchema = {
     properties: {
       id: { type: "integer" },
       title: { type: "string" },
-      description: { type: "string", nullable: true },
+      description: { type: ["string", "null"] },
       status: { type: "string", enum: ["todo", "in-progress", "done"] },
       createdAt: { type: "string", format: "date-time" },
-      updatedAt: { type: "string", format: "date-time", nullable: true },
+      updatedAt: { type: ["string", "null"], format: "date-time" },
     },
+    required: ["id", "title", "status", "createdAt", "updatedAt"],
+    additionalProperties: false,
   },
-  required: ["id", "title", "status", "createdAt", "updatedAt"],
-  additionalProperties: false,
 };
 
 const taskValidator = ajvInstance.compile(taskSchema);
-
 export { taskValidator };

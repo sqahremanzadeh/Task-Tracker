@@ -3,7 +3,7 @@ import { fileURLToPath } from "url";
 import path from "path";
 import dotenv from "dotenv";
 
-import { error, warning } from "../utils/chalkUtils.js";
+import { errorOut, warning, success } from "../utils/chalkUtils.js";
 import { taskValidator } from "./schema/taskSchema.js";
 
 // Getting the task DB file path
@@ -23,14 +23,14 @@ export default class taskDB {
       if (!taskValidator(data)) {
         console.log(
           warning("The data from task DB doesn't match the schema : "),
-          error(taskValidator.errors),
+          errorOut(taskValidator.errors),
         );
       }
       return data;
     } catch (error) {
       console.log(
-        error("There has been an error reading from task DB file : "),
-        error(error.message),
+        errorOut("There has been an error reading from task DB file : "),
+        errorOut(error.message),
       );
       return [];
     }
@@ -43,10 +43,10 @@ export default class taskDB {
         return true;
       } catch (error) {
         console.log(
-          error(
+          errorOut(
             "There has been an error resetting or creating the task DB file : ",
           ),
-          error(error.message),
+          errorOut(error.message),
         );
         return false;
       }
@@ -57,7 +57,7 @@ export default class taskDB {
             warning(
               "The data to be written to task DB doesn't match the schema : ",
             ),
-            error(taskValidator.errors),
+            errorOut(taskValidator.errors),
           );
           return false;
         }
@@ -65,8 +65,8 @@ export default class taskDB {
         return true;
       } catch (error) {
         console.log(
-          error("There has been an error writing to the task DB file : "),
-          error(error.message),
+          errorOut("There has been an error writing to the task DB file : "),
+          errorOut(error.message),
         );
         return false;
       }
@@ -78,9 +78,9 @@ export default class taskDB {
       taskDBExists = fs.existsSync(__taskDBPath);
     } catch (error) {
       console.log(
-        error(
+        errorOut(
           "There has been an error checking whether task DB file exists or not : ",
-          error(error.message),
+          errorOut(error.message),
         ),
       );
     }
@@ -94,7 +94,7 @@ export default class taskDB {
         (max, task) => (task.id > max ? task.id : max),
         0,
       );
-      this.expenseId = maxId;
+      this.taskId = maxId;
       console.log(
         success(
           "The task DB already existed and the maximum id was calculated and assigned to the static property of class.",
@@ -115,7 +115,7 @@ export default class taskDB {
     if (!taskValidator([task])) {
       console.log(
         warning("The task to be added doesn't match the schema : "),
-        error(taskValidator.errors),
+        errorOut(taskValidator.errors),
       );
       return false;
     }
@@ -145,7 +145,7 @@ export default class taskDB {
     };
     if (!taskValidator([updatedTask])) {
       console.log(
-        "The updated task doesn't match the schema : ",
+        errorOut("The updated task doesn't match the schema : ")  ,
         taskValidator.errors,
       );
       return false;
