@@ -148,6 +148,10 @@ export default class taskDB {
     static async deleteTask(taskId) {
         const data = await this.readTaskDB();
         const taskIndex = data.findIndex((task) => task.id === taskId);
+        if (taskIndex === -1) {
+            console.log(errorOut(`The task with ID ${taskId} doesn't exist in the task DB.`));
+            return false;
+        }
         data.splice(taskIndex, 1);
         await this.writeOrResetTaskDB(data);
         return true;

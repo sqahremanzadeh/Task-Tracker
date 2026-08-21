@@ -1,7 +1,11 @@
 import { program } from "commander";
 
 import taskDB from "./db/taskDB.js";
-import { addTaskCommand, editTaskCommand } from "./utils/commander/taskCommander.js";
+import {
+    addTaskCommand,
+    editTaskCommand,
+    deleteTaskCommand,
+} from "./utils/commander/taskCommander.js";
 import { errorOut, warning, success } from "./utils/chalkUtils.js";
 
 // Initializing the task DB
@@ -29,4 +33,14 @@ editTaskCommand.action(async (options) => {
     }
 });
 
+// Deleting an existing task command action
+deleteTaskCommand.action(async (options) => {
+    const { id } = options;
+    const result = await taskDB.deleteTask(parseInt(id, 10));
+    if (result) {
+        console.log(success(`Task with ID ${id} deleted successfully.`));
+    } else {
+        console.log(errorOut(`Failed to delete task with ID ${id}.`));
+    }
+});
 program.parse(process.argv);

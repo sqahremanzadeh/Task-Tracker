@@ -6,13 +6,5 @@
     "status": "todo",
     "createdAt": "2026-08-21T17:25:27.188Z",
     "updatedAt": null
-  },
-  {
-    "id": 2,
-    "title": "Finishing the edit",
-    "description": "Edit of readme.md file",
-    "status": "done",
-    "createdAt": "2026-08-21T17:34:35.451Z",
-    "updatedAt": "2026-08-21T17:45:34.861Z"
   }
 ]

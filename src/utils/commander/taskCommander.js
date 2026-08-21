@@ -27,4 +27,10 @@ const editTaskCommand = program
         "todo",
     );
 
-export { addTaskCommand, editTaskCommand };
+// Deleting an existing task command
+const deleteTaskCommand = program
+    .command("delete-task")
+    .description("Deleting an existing task")
+    .requiredOption("-i, --id <id>", "ID of the task to delete");
+
+export { addTaskCommand, editTaskCommand, deleteTaskCommand };
